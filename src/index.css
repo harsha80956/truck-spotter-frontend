@@ -1,0 +1,125 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.eld-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(24, 1fr);
+  border: 1px solid #ccc;
+}
+
+.eld-grid-header {
+  display: grid;
+  grid-template-columns: 60px repeat(24, 1fr);
+  border-bottom: 1px solid #ccc;
+}
+
+.eld-grid-header > div {
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 4px 0;
+  border-right: 1px solid #ccc;
+}
+
+.eld-grid-row {
+  display: grid;
+  grid-template-columns: 60px repeat(24, 1fr);
+  height: 30px;
+  border-bottom: 1px solid #ccc;
+}
+
+.eld-grid-row > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  border-right: 1px solid #ccc;
+}
+
+.eld-grid-row > div {
+  border-right: 1px solid #eee;
+}
+
+.eld-off-duty {
+  background-color: #f0f0f0;
+}
+
+.eld-sleeper {
+  background-color: #d1e7dd;
+}
+
+.eld-driving {
+  background-color: #cfe2ff;
+}
+
+.eld-on-duty {
+  background-color: #fff3cd;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background-color: white;
+  }
+  
+  header, footer, button, .bg-background {
+    display: none !important;
+  }
+  
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  .container {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
+  h1 {
+    font-size: 24px !important;
+    margin-bottom: 16px !important;
+  }
+  
+  h2, h3 {
+    font-size: 18px !important;
+    margin-bottom: 12px !important;
+  }
+  
+  .bg-white {
+    box-shadow: none !important;
+    border: 1px solid #eee !important;
+    margin-bottom: 16px !important;
+  }
+  
+  .eld-grid {
+    page-break-inside: avoid;
+  }
+  
+  table {
+    font-size: 10px !important;
+  }
+  
+  th, td {
+    padding: 4px !important;
+  }
+} 

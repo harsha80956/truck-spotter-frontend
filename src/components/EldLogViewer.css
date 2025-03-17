@@ -1,0 +1,247 @@
+/* ELD Log Viewer CSS */
+
+/* Grid layout for 24 hours */
+.grid-cols-24 {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+}
+
+/* Ensure the graph has proper height */
+.eld-graph-container {
+  min-height: 200px;
+  background-color: white;
+}
+
+/* Status line styling */
+.status-line {
+  stroke: #000;
+  stroke-width: 3px;
+  fill: none;
+  stroke-linejoin: round;
+  stroke-linecap: square;
+}
+
+/* Remark indicators */
+.remark-indicator {
+  width: 8px;
+  height: 12px;
+  border-top: 2px solid black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+}
+
+/* ELD grid styling */
+.eld-grid {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.eld-grid-row {
+  display: flex;
+  height: 40px;
+  align-items: center;
+}
+
+.eld-grid-status {
+  width: 120px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+  flex-shrink: 0;
+}
+
+.eld-grid-timeline {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.eld-grid-hour {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  border-right: 1px solid #e5e7eb;
+}
+
+.eld-grid-hour:last-child {
+  border-right: none;
+}
+
+.eld-grid-segment {
+  flex: 1;
+  height: 100%;
+  border-right: 1px dashed #f3f4f6;
+}
+
+.eld-grid-segment:last-child {
+  border-right: none;
+}
+
+.eld-grid-segment.filled {
+  border-right: none;
+}
+
+.eld-grid-container {
+  position: relative;
+  overflow-x: auto;
+}
+
+.eld-grid-header {
+  display: flex;
+  margin-left: 120px;
+}
+
+.eld-grid-hour-label {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #6b7280;
+  padding-bottom: 4px;
+}
+
+/* Vertical grid lines */
+.eld-grid-line {
+  border-color: #b3c6e7; /* Light blue grid lines */
+}
+
+.eld-grid-cell {
+  position: relative;
+  border-right: 1px solid #b3c6e7;
+}
+
+.eld-grid-cell:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background-color: #b3c6e7;
+}
+
+.eld-status-row {
+  height: 48px;
+  border-bottom: 1px solid #b3c6e7;
+  position: relative;
+}
+
+.eld-status-row:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background-color: #d1ddf1;
+}
+
+.eld-tick-mark {
+  position: absolute;
+  bottom: 0;
+  width: 1px;
+  background-color: #b3c6e7;
+}
+
+/* Current status display */
+.current-status-display {
+  border-left: 4px solid;
+  padding-left: 12px;
+}
+
+.current-status-display.off {
+  border-color: #10b981;
+}
+
+.current-status-display.sb {
+  border-color: #6366f1;
+}
+
+.current-status-display.driving {
+  border-color: #3b82f6;
+}
+
+.current-status-display.on {
+  border-color: #f59e0b;
+}
+
+/* HOS warning colors */
+.hos-warning {
+  color: #f59e0b;
+}
+
+.hos-danger {
+  color: #ef4444;
+}
+
+.hos-ok {
+  color: #10b981;
+}
+
+/* Certification badge */
+.certification-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: #ecfdf5;
+  color: #10b981;
+  border: 1px solid #d1fae5;
+  border-radius: 9999px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.certification-badge svg {
+  margin-right: 4px;
+  width: 16px;
+  height: 16px;
+}
+
+.certification-badge.not-certified {
+  background-color: #fffbeb;
+  color: #f59e0b;
+  border-color: #fef3c7;
+}
+
+/* Ensure the timeline is responsive */
+@media (max-width: 768px) {
+  .grid-cols-24 {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  
+  .grid-cols-24 > div:nth-child(odd) {
+    display: none;
+  }
+  
+  .eld-grid-status {
+    width: 100px;
+  }
+  
+  .eld-grid-header {
+    margin-left: 100px;
+  }
+}
+
+/* Ensure the timeline is responsive for very small screens */
+@media (max-width: 480px) {
+  .grid-cols-24 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  
+  .grid-cols-24 > div:not(:nth-child(4n)) {
+    display: none;
+  }
+  
+  .eld-grid-status {
+    width: 80px;
+  }
+  
+  .eld-grid-header {
+    margin-left: 80px;
+  }
+} 
