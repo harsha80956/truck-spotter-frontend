@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import MapView from './MapView';
 import { geocodeAddress } from '../services/mapService';
+import eld from '../../eld.json';
 
 // Styles
 import './EldLogViewer.css';
@@ -416,14 +417,18 @@ const EnhancedEldLogViewer: React.FC<EnhancedEldLogViewerProps> = ({ tripId }) =
   const graphRef = useRef<HTMLDivElement>(null);
   
   // Fetch trip data (or use sample data if API fails)
-  const { 
-    data: tripData, 
-    isLoading, 
-    isError, 
-    error: apiError 
-  } = useGetTripQuery(Number(tripId), {
-    skip: !tripId || tripId === '0' || isNaN(Number(tripId))
-  });
+  // const { 
+  //   data: tripData, 
+  //   isLoading, 
+  //   isError, 
+  //   error: apiError 
+  // } = useGetTripQuery(Number(tripId), {
+  //   skip: !tripId || tripId === '0' || isNaN(Number(tripId))
+  // });
+  const tripData = eld;
+  const isLoading = false;
+  // const apiError = null;
+  const isError = false;
   
   // Log trip data for debugging
   useEffect(() => {

@@ -3,8 +3,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useGetTripsQuery } from '../store/api/tripApi';
 import EnhancedEldLogViewer from '../components/EnhancedEldLogViewer';
 import { LoadingSpinner, ErrorMessage } from '../components/ui';
-import { formatDate } from '../utils/errorHandling';
-import { BackendTripRoute } from '../store/slices/tripSlice';
+import trips from '../../trips.json';
+import eld from '../../eld.json';
 
 const EldLogsPage: React.FC = () => {
   const location = useLocation();
@@ -13,7 +13,15 @@ const EldLogsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(10); // Number of trips per page
   const [showAllTripsInDropdown, setShowAllTripsInDropdown] = useState(false);
-  const { data: trips, isLoading, error } = useGetTripsQuery();
+  // const { data: trips, isLoading, error } = useGetTripsQuery();
+  // const data = trips;
+  const isLoading = false;
+  const error = null;
+
+  
+
+
+  console.log("data", trips)
 
   // Calculate total pages
   const totalTrips = trips?.length || 0;

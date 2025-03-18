@@ -1,0 +1,22 @@
+[{
+    "id": 14,
+    "current_location": {
+        "address": "Kochi, Ernakulam, Kerala, 682001, India"
+    },
+    "pickup_location": {
+        "address": "Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India"
+    },
+    "dropoff_location": {
+        "address": "Hyderabad, Bahadurpura mandal, Hyderabad, Telangana, India"
+    },
+    "total_distance": 537.2090418492597,
+    "total_duration": 644,
+    "start_time": "2025-03-18T03:39:00Z",
+    "end_time": "2025-03-19T02:53:39.051013Z",
+    "created_at": "2025-03-18T03:39:29.993770Z",
+    "segments": [],
+    "current_location_address": "Kochi, Ernakulam, Kerala, 682001, India",
+    "pickup_location_address": "Bengaluru, Bangalore North, Bengaluru Urban, Karnataka, India",
+    "dropoff_location_address": "Hyderabad, Bahadurpura mandal, Hyderabad, Telangana, India",
+    "segment_count": 4
+}]
