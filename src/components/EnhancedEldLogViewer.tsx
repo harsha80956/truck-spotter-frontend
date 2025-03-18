@@ -7,6 +7,7 @@ import { RootState } from '../store';
 import EldLogGrid from './EldLogGrid';
 import html2canvas from 'html2canvas';
 import MapView from './MapView';
+import eld from '../../eld.json';
 
 // Styles
 import './EldLogViewer.css';
@@ -400,7 +401,7 @@ const EnhancedEldLogViewer: React.FC<EnhancedEldLogViewerProps> = ({ tripId }) =
   // } = useGetTripQuery(Number(tripId), {
   //   skip: !tripId || tripId === '0' || isNaN(Number(tripId))
   // });
-  const tripData = null;
+  const tripData = eld;
   const isLoading = false;
   // const apiError = null;
   const isError = false;
