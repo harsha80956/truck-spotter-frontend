@@ -120,7 +120,7 @@ const RouteMap: React.FC<RouteMapProps> = ({ segments, bounds }) => {
           const marker = new mapboxgl.Marker({
             color: getSegmentColor(segment.type)
           })
-            .setLngLat(coordinates[0])
+            .setLngLat(coordinates[0] as [number, number])
             .setPopup(
               new mapboxgl.Popup({ offset: 25 })
                 .setHTML(`

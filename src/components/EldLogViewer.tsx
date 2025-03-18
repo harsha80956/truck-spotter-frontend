@@ -15,11 +15,6 @@ interface EldLogViewerProps {
   tripId?: number;
 }
 
-interface DailyLogState extends Omit<DailyLog, 'driver' | 'carrier'> {
-  driver_name: string;
-  carrier_name: string;
-}
-
 // Add this interface for HOS calculation periods
 interface CalculationPeriod {
   id: number;
@@ -193,12 +188,14 @@ const EldLogViewer: React.FC<EldLogViewerProps> = ({ tripId }) => {
 
   // Calculate total hours by status
   const calculateHoursByStatus = () => {
-    if (!selectedLog || !selectedLog.entries) return {
-      'OFF': 0,
-      'SB': 0,
-      'D': 0,
-      'ON': 0
-    };
+    if (!selectedLog || !selectedLog.entries) {
+      return {
+        'OFF': 0,
+        'SB': 0,
+        'D': 0,
+        'ON': 0
+      };
+    }
     
     const hoursByStatus: Record<DutyStatus, number> = {
       'OFF': 0,
@@ -218,84 +215,6 @@ const EldLogViewer: React.FC<EldLogViewerProps> = ({ tripId }) => {
     });
     
     return hoursByStatus;
-  };
-
-  // Add this function to calculate HOS periods
-  const calculateHosPeriods = (entries: LogEntry[]): CalculationPeriod[] => {
-    if (!entries || entries.length === 0) return [];
-    
-    // Sort entries by start time
-    const sortedEntries = [...entries].sort((a, b) => 
-      new Date(a.start_time).getTime() - new Date(b.start_time).getTime()
-    );
-    
-    // Find qualifying breaks (sleeper berth periods >= 2 hours)
-    const qualifyingBreaks = sortedEntries.filter(entry => 
-      entry.status === 'SB' && 
-      (new Date(entry.end_time).getTime() - new Date(entry.start_time).getTime()) / (1000 * 60 * 60) >= 2
-    );
-    
-    // If we don't have at least 2 qualifying breaks, we can't create calculation periods
-    if (qualifyingBreaks.length < 2) return [];
-    
-    const calculationPeriods: CalculationPeriod[] = [];
-    
-    // Create calculation periods from pairs of breaks
-    for (let i = 0; i < qualifyingBreaks.length - 1; i++) {
-      const break1 = qualifyingBreaks[i];
-      const break2 = qualifyingBreaks[i + 1];
-      
-      // Period starts at the end of first break and ends at start of second break
-      const periodStart = new Date(break1.end_time);
-      const periodEnd = new Date(break2.start_time);
-      
-      // Calculate driving and on-duty hours within this period
-      let drivingHours = 0;
-      let onDutyHours = 0;
-      
-      for (const entry of sortedEntries) {
-        const entryStart = new Date(entry.start_time);
-        const entryEnd = new Date(entry.end_time);
-        
-        // Skip if entry is outside the calculation period
-        if (entryEnd <= periodStart || entryStart >= periodEnd) continue;
-        
-        // Skip the excluded break
-        if (entry === break1) continue;
-        
-        // Calculate overlap duration in hours
-        const overlapStart = new Date(Math.max(entryStart.getTime(), periodStart.getTime()));
-        const overlapEnd = new Date(Math.min(entryEnd.getTime(), periodEnd.getTime()));
-        const durationHours = (overlapEnd.getTime() - overlapStart.getTime()) / (1000 * 60 * 60);
-        
-        if (entry.status === 'D') {
-          drivingHours += durationHours;
-        }
-        
-        if (entry.status === 'D' || entry.status === 'ON') {
-          onDutyHours += durationHours;
-        }
-      }
-      
-      // Round to 1 decimal place
-      drivingHours = Math.round(drivingHours * 10) / 10;
-      onDutyHours = Math.round(onDutyHours * 10) / 10;
-      
-      // Check compliance (11 hours driving, 14 hours on-duty)
-      const isCompliant = drivingHours <= 11 && onDutyHours <= 14;
-      
-      calculationPeriods.push({
-        id: i + 1,
-        startTime: periodStart,
-        endTime: periodEnd,
-        excludedBreakId: i + 1,
-        drivingHours,
-        onDutyHours,
-        isCompliant
-      });
-    }
-    
-    return calculationPeriods;
   };
 
   // Add this function to transform log entries to route segments for the map
@@ -562,13 +481,6 @@ const EldLogViewer: React.FC<EldLogViewerProps> = ({ tripId }) => {
     const totalDrivingHours = hoursByStatus['D'];
     const totalOnDutyHours = hoursByStatus['D'] + hoursByStatus['ON'];
     
-    // Calculate remaining hours (based on 11-hour driving limit and 14-hour on-duty limit)
-    const remainingDrivingHours = Math.max(0, 11 - totalDrivingHours);
-    const remainingOnDutyHours = Math.max(0, 14 - totalOnDutyHours);
-    
-    // Calculate total miles for the day
-    const totalMiles = selectedLog.totalMiles || 0;
-    
     // Find distinct locations for the location summary
     const locations = new Set<string>();
     completeEntries.forEach(entry => {
@@ -576,9 +488,6 @@ const EldLogViewer: React.FC<EldLogViewerProps> = ({ tripId }) => {
         locations.add(entry.location);
       }
     });
-    
-    // Process entries to create timeline data
-    const timelineData = processEntriesForTimeline(completeEntries, dayStart, dayEnd);
     
     // Create status line points
     const statusData = createStatusLinePoints(completeEntries);
@@ -712,7 +621,7 @@ const EldLogViewer: React.FC<EldLogViewerProps> = ({ tripId }) => {
                         
                         {/* Add vertical tick marks in each cell */}
                         <div className="absolute inset-0 flex flex-col">
-                          {['OFF', 'SB', 'D', 'ON'].map((status, rowIndex) => (
+                          {['OFF', 'SB', 'D', 'ON'].map((status) => (
                             <div key={status} className="flex-1 border-b border-blue-200 relative">
                               {/* 15-minute tick marks */}
                               <div className="absolute inset-0 flex">

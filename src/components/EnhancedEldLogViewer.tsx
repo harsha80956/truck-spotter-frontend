@@ -1,17 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useAppSelector } from '../store/hooks';
-import { useApi } from '../hooks/useApi';
-import { DailyLog, DutyStatus, LogEntry, HosStatus, RouteSegment, Location } from '../types';
-import { LoadingSpinner, ErrorMessage } from './ui';
+import { DailyLog, DutyStatus, LogEntry, RouteSegment, Location } from '../types';
+import { LoadingSpinner } from './ui';
 import { formatDate, formatNumber } from '../utils/errorHandling';
 import { RootState } from '../store';
-import { useGetTripQuery } from '../store/api/tripApi';
 import EldLogGrid from './EldLogGrid';
-import { Link } from 'react-router-dom';
 import html2canvas from 'html2canvas';
 import MapView from './MapView';
-import { geocodeAddress } from '../services/mapService';
-import eld from '../../eld.json';
 
 // Styles
 import './EldLogViewer.css';
@@ -199,27 +194,7 @@ const printStyles = `
 }
 `;
 
-// Define a simple TabButton component
-const TabButton: React.FC<{ active: boolean; onClick: () => void; children: React.ReactNode }> = ({
-  active,
-  onClick,
-  children
-}) => {
-  return (
-    <button
-      type="button"
-      className={`px-4 py-2 text-sm font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-        active
-          ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
-          : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
-      }`}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-};
-
+// Define the interface for the component
 interface EnhancedEldLogViewerProps {
   tripId: string | number;
 }
@@ -407,9 +382,9 @@ const EnhancedEldLogViewer: React.FC<EnhancedEldLogViewerProps> = ({ tripId }) =
   const [remarkText, setRemarkText] = useState('');
   const [currentLocation, setCurrentLocation] = useState('');
   const [error, setError] = useState<string | null>(null);
-  const [showCertifyModal, setShowCertifyModal] = useState(false);
   const [isCertified, setIsCertified] = useState(false);
   const [certificationDate, setCertificationDate] = useState<string | null>(null);
+  const [showCertifyModal, setShowCertifyModal] = useState(false);
   const [showDebug, setShowDebug] = useState(false);
   
   // References
@@ -425,7 +400,7 @@ const EnhancedEldLogViewer: React.FC<EnhancedEldLogViewerProps> = ({ tripId }) =
   // } = useGetTripQuery(Number(tripId), {
   //   skip: !tripId || tripId === '0' || isNaN(Number(tripId))
   // });
-  const tripData = eld;
+  const tripData = null;
   const isLoading = false;
   // const apiError = null;
   const isError = false;

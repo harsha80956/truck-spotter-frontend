@@ -17,11 +17,11 @@ interface ReverseGeocodeRequest {
 // Transform backend location to frontend format
 const transformLocation = (location: { address: string; latitude: number; longitude: number }): Location => ({
   address: location.address,
-  lat: location.latitude,
-  lng: location.longitude,
+  lat: location.latitude || 0,
+  lng: location.longitude || 0,
   // Also include the original properties for backward compatibility
-  latitude: location.latitude,
-  longitude: location.longitude
+  latitude: location.latitude || 0,
+  longitude: location.longitude || 0
 });
 
 // Create a custom error
@@ -37,7 +37,13 @@ export const locationApi = apiSlice.injectEndpoints({
     geocode: builder.mutation<Location, GeocodeRequest>({
       queryFn: async (request) => {
         try {
-          const location = await geocodeAddress(request.address);
+          const result = await geocodeAddress(request.address);
+          // Make sure result has all required properties
+          const location = {
+            address: result.address,
+            latitude: result.latitude || 0,
+            longitude: result.longitude || 0
+          };
           return { 
             data: transformLocation(location)
           };
@@ -53,7 +59,13 @@ export const locationApi = apiSlice.injectEndpoints({
     reverseGeocode: builder.mutation<Location, ReverseGeocodeRequest>({
       queryFn: async (request) => {
         try {
-          const location = await reverseGeocode(request.latitude, request.longitude);
+          const result = await reverseGeocode(request.latitude, request.longitude);
+          // Make sure result has all required properties
+          const location = {
+            address: result.address,
+            latitude: result.latitude || 0,
+            longitude: result.longitude || 0
+          };
           return { 
             data: transformLocation(location)
           };
